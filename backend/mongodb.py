@@ -82,7 +82,7 @@ def load_search_index():
     if db is None:
         return None
     try:
-        doc = db["search_index"].find_one({"_id": "global"})
+        doc = db["search_index_v3"].find_one({"_id": "global"})
         if doc:
             doc.pop("_id", None)
         return doc
@@ -97,7 +97,7 @@ def save_search_index(data: dict):
     try:
         doc = dict(data)
         doc["_id"] = "global"
-        db["search_index"].replace_one({"_id": "global"}, doc, upsert=True)
+        db["search_index_v3"].replace_one({"_id": "global"}, doc, upsert=True)
         print("Successfully saved search index to MongoDB!")
     except Exception as e:
         print(f"Warning: Failed to save search index to MongoDB: {e}")
