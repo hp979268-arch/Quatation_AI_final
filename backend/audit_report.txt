@@ -1,0 +1,16 @@
+--- KOHLER PRICE AUDIT ---
+Zero Price: 0
+Low Price (<500): 4
+Examples: [('GLASS SURFACE CLEANER', '498'), ('TOILET BOWL CLEANER', '160'), ('SURFACE CLEANER (FOR TOILET SEATS & TILES)', '450'), ('K-1286731', '126')]
+
+--- AQUANT PRICE AUDIT ---
+Zero Price: 0
+Low Price (<500): 0
+
+--- KOHLER IMAGE AUDIT ---
+No Image: 0
+Image File Missing on Disk: 0
+
+--- AQUANT IMAGE AUDIT ---
+No Image: 0
+Image File Missing on Disk: 0

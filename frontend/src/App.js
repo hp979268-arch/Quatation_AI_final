@@ -1,0 +1,442 @@
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import './App.css';
+import Quotation from './pages/quotation';
+import Dashboard from './pages/dashboard';
+import Website from './pages/website';
+
+import BASE, {
+  clearApiBaseOverride,
+  getApiBase,
+  hasApiBaseOverride,
+  setApiBaseOverride,
+} from './api';
+import { readString, writeJson, writeString } from './utils/storage';
+
+const APP_STATE_KEYS = {
+  cart: 'quotation-ai/cart',
+  page: 'quotation-ai/current-page',
+  theme: 'quotation-ai/theme',
+  swCleanup: 'quotation-ai/sw-cleanup-v2',
+};
+
+function getStandaloneMode() {
+  if (typeof window === 'undefined') {
+    return false;
+  }
+
+  const supportsMatchMedia = typeof window.matchMedia === 'function';
+  const standaloneMediaMatch = supportsMatchMedia
+    ? window.matchMedia('(display-mode: standalone)').matches
+    : false;
+
+  return (
+    standaloneMediaMatch ||
+    window.navigator.standalone === true
+  );
+}
+
+function getDesktopMode() {
+  return Boolean(typeof window !== 'undefined' && window.desktopApp && window.desktopApp.isDesktop);
+}
+
+function getInitialShellMode() {
+  if (typeof window === 'undefined') {
+    return 'website';
+  }
+
+  if (getDesktopMode()) {
+    return 'app';
+  }
+
+  const hash = String(window.location.hash || '').toLowerCase();
+  if (hash === '#/app' || hash.startsWith('#/app/')) {
+    return 'app';
+  }
+
+  return getStandaloneMode() ? 'app' : 'website';
+}
+
+function getInitialPage() {
+  return getDesktopMode() ? 'quotation' : 'dashboard';
+}
+
+function getInitialCart() {
+  // We no longer restore the cart on refresh to keep the app fresh as per user request
+  return [];
+}
+
+function getInitialTheme() {
+  return readString(APP_STATE_KEYS.theme, 'light') === 'dark' ? 'dark' : 'light';
+}
+
+function App() {
+  const [shellMode, setShellMode] = useState(getInitialShellMode);
+  const [currentPage, setCurrentPage] = useState(getInitialPage);
+  const [syncing, setSyncing] = useState(false);
+  const [cart, setCart] = useState(getInitialCart);
+  const [theme, setTheme] = useState(getInitialTheme);
+  const [isOnline, setIsOnline] = useState(() => (typeof navigator === 'undefined' ? true : navigator.onLine));
+  const [installPrompt, setInstallPrompt] = useState(null);
+  const [installHelp, setInstallHelp] = useState('');
+  const [isInstalled, setIsInstalled] = useState(getStandaloneMode);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [apiBaseInput, setApiBaseInput] = useState(() => getApiBase());
+  const [apiOverrideActive, setApiOverrideActive] = useState(() => hasApiBaseOverride());
+  const [menuOpen, setMenuOpen] = useState(false);
+  const pageViewClass = `${currentPage}-view`;
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    if (process.env.NODE_ENV === 'test') {
+      return;
+    }
+
+    const cleanupKey = APP_STATE_KEYS.swCleanup;
+    if (window.localStorage.getItem(cleanupKey) === 'done') {
+      return;
+    }
+
+    const hasServiceWorkerSupport = 'serviceWorker' in navigator;
+    const hasCacheSupport = 'caches' in window;
+    if (!hasServiceWorkerSupport && !hasCacheSupport) {
+      window.localStorage.setItem(cleanupKey, 'done');
+      return;
+    }
+
+    // Clear legacy PWA assets once so stale bundles stop showing old image fallbacks.
+    Promise.resolve()
+      .then(async () => {
+        try {
+          if (hasServiceWorkerSupport) {
+            const registrations = await navigator.serviceWorker.getRegistrations();
+            await Promise.all(registrations.map((registration) => registration.unregister()));
+          }
+        } catch (error) {
+          console.warn('Service worker cleanup failed', error);
+        }
+
+        try {
+          if (hasCacheSupport) {
+            const cacheKeys = await caches.keys();
+            await Promise.all(cacheKeys.map((key) => caches.delete(key)));
+          }
+        } catch (error) {
+          console.warn('Cache cleanup failed', error);
+        }
+      })
+      .finally(() => {
+        window.localStorage.setItem(cleanupKey, 'done');
+        window.location.reload();
+      });
+  }, []);
+
+  useEffect(() => {
+    const syncShellMode = () => {
+      if (typeof window === 'undefined') {
+        return;
+      }
+
+      if (getDesktopMode()) {
+        setShellMode('app');
+        return;
+      }
+
+      const hash = String(window.location.hash || '').toLowerCase();
+      if (hash === '#/app' || hash.startsWith('#/app/')) {
+        setShellMode('app');
+        return;
+      }
+
+      setShellMode(getStandaloneMode() ? 'app' : 'website');
+    };
+
+    window.addEventListener('hashchange', syncShellMode);
+    syncShellMode();
+
+    return () => window.removeEventListener('hashchange', syncShellMode);
+  }, []);
+
+  useEffect(() => {
+    writeString(APP_STATE_KEYS.page, currentPage);
+    setMenuOpen(false);
+  }, [currentPage]);
+
+  const navigateToShell = (mode) => {
+    if (typeof window === 'undefined') {
+      setShellMode(mode);
+      return;
+    }
+
+    const nextHash = mode === 'app' ? '#/app' : '#/';
+    if (window.location.hash !== nextHash) {
+      window.location.hash = nextHash;
+    }
+    setShellMode(mode);
+  };
+
+  useEffect(() => {
+    writeJson(APP_STATE_KEYS.cart, cart);
+  }, [cart]);
+
+  useEffect(() => {
+    writeString(APP_STATE_KEYS.theme, theme);
+  }, [theme]);
+
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
+    const mediaQuery =
+      typeof window !== 'undefined' && window.matchMedia
+        ? window.matchMedia('(display-mode: standalone)')
+        : null;
+
+    const syncStandaloneState = () => setIsInstalled(getStandaloneMode());
+    const handleBeforeInstallPrompt = (event) => {
+      event.preventDefault();
+      setInstallPrompt(event);
+      setInstallHelp('');
+    };
+    const handleAppInstalled = () => {
+      setIsInstalled(true);
+      setInstallPrompt(null);
+      setInstallHelp('App installed successfully.');
+    };
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('appinstalled', handleAppInstalled);
+
+    if (mediaQuery) {
+      if (typeof mediaQuery.addEventListener === 'function') {
+        mediaQuery.addEventListener('change', syncStandaloneState);
+      } else if (typeof mediaQuery.addListener === 'function') {
+        mediaQuery.addListener(syncStandaloneState);
+      }
+    }
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('appinstalled', handleAppInstalled);
+
+      if (mediaQuery) {
+        if (typeof mediaQuery.removeEventListener === 'function') {
+          mediaQuery.removeEventListener('change', syncStandaloneState);
+        } else if (typeof mediaQuery.removeListener === 'function') {
+          mediaQuery.removeListener(syncStandaloneState);
+        }
+      }
+    };
+  }, []);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+  };
+
+  const handleSync = async () => {
+    setSyncing(true);
+    try {
+      const res = await axios.get(`${BASE}/refresh`);
+      alert(`${res.data.message || 'Catalog sync started.'}\n\nPlease wait 30-60 seconds, then search.`);
+    } catch (error) {
+      console.error(error);
+      alert('Sync failed. Please check backend status.');
+    }
+    setSyncing(false);
+  };
+
+  const handleInstallApp = async () => {
+    if (installPrompt) {
+      installPrompt.prompt();
+      const choice = await installPrompt.userChoice;
+      if (choice?.outcome === 'accepted') {
+        setInstallHelp('Installing app...');
+      } else {
+        setInstallHelp('Install skipped. You can install later from the browser menu.');
+      }
+      setInstallPrompt(null);
+      return;
+    }
+
+    setInstallHelp('Use your browser menu and choose "Install app" or "Add to Home Screen".');
+  };
+
+  const openSettings = () => {
+    setApiBaseInput(getApiBase());
+    setApiOverrideActive(hasApiBaseOverride());
+    setSettingsOpen(true);
+  };
+
+  const saveApiSettings = () => {
+    const normalized = String(apiBaseInput || '').trim();
+    if (!/^https?:\/\//i.test(normalized)) {
+      alert('Please enter a valid backend URL starting with http:// or https://');
+      return;
+    }
+
+    setApiBaseOverride(normalized);
+    setApiOverrideActive(true);
+    setSettingsOpen(false);
+    window.location.reload();
+  };
+
+  const resetApiSettings = () => {
+    clearApiBaseOverride();
+    setApiOverrideActive(false);
+    setSettingsOpen(false);
+    window.location.reload();
+  };
+
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'dashboard':
+        return (
+          <Dashboard
+            setCurrentPage={setCurrentPage}
+            cart={cart}
+            setCart={setCart}
+          />
+        );
+      case 'quotation':
+        return <Quotation cart={cart} />;
+      default:
+        return <Dashboard 
+            setCurrentPage={setCurrentPage}
+            cart={cart}
+            setCart={setCart}
+        />;
+    }
+  };
+
+  if (shellMode === 'website') {
+    return <Website onEnterApp={() => navigateToShell('app')} />;
+  }
+
+  return (
+    <div className={`App ${theme === 'dark' ? 'dark-theme' : ''} ${pageViewClass}`}>
+      <div className="App-grain" />
+      <nav className="navbar">
+        <div className="nav-shell">
+          <div className="nav-brand">
+            <img
+              src="https://www.shreejiceramica.com/tiles/vadodara-logo.png"
+              alt="Shreeji Ceramica"
+              className="nav-company-logo"
+            />
+            <div className="nav-logo">
+              <span className="nav-company-name">Shreeji Ceramica</span>
+              <span className="nav-company-tagline">Redefining Luxury</span>
+            </div>
+          </div>
+
+          <button
+            className="hamburger-menu"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle navigation menu"
+            aria-expanded={menuOpen}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+
+          <div className={`nav-links ${menuOpen ? 'mobile-open' : ''}`}>
+            <button
+              className={`nav-link-btn ${currentPage === 'dashboard' ? 'active' : ''}`}
+              onClick={() => setCurrentPage('dashboard')}
+            >
+              Dashboard
+            </button>
+            <button
+              className={`nav-link-btn ${currentPage === 'quotation' ? 'active' : ''}`}
+              onClick={() => setCurrentPage('quotation')}
+            >
+              Create Quotation {cart.length > 0 && `(${cart.length})`}
+            </button>
+          </div>
+
+          <div className="nav-actions">
+            <button
+              onClick={toggleTheme}
+              className="theme-toggle"
+              title="Toggle Light/Dark Mode"
+              aria-pressed={theme === 'dark'}
+            >
+              {theme === 'light' ? 'Dark' : 'Light'}
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      <main className="container">
+        {(installHelp || !isOnline || apiOverrideActive) && (
+          <div className={`app-banner ${isOnline ? 'info' : 'warning'}`}>
+            {!isOnline && <span>You are offline. Cached drafts and previous results will still be available.</span>}
+            {isOnline && installHelp && <span>{installHelp}</span>}
+            {apiOverrideActive && (
+              <span>
+                | Custom backend active: <strong>{getApiBase()}</strong>
+              </span>
+            )}
+          </div>
+        )}
+
+        {renderPage()}
+        <footer className="footer">
+          &copy; {new Date().getFullYear()} Shreeji Ceramica | Quotation Management System
+        </footer>
+      </main>
+
+      {/* Cart floating badge removed as search page is removed */}
+
+      {settingsOpen && (
+        <div className="app-modal-overlay" onClick={() => setSettingsOpen(false)}>
+          <div className="app-settings-card" onClick={(event) => event.stopPropagation()}>
+            <div className="app-settings-head">
+              <div>
+                <h2>App Settings</h2>
+                <p>Use a deployed FastAPI backend so the app works on phone, iPhone, tablet, and desktop.</p>
+              </div>
+              <button className="app-settings-close" onClick={() => setSettingsOpen(false)}>
+                x
+              </button>
+            </div>
+
+            <label className="app-settings-label" htmlFor="api-base-input">
+              Backend API URL
+            </label>
+            <input
+              id="api-base-input"
+              className="app-settings-input"
+              value={apiBaseInput}
+              onChange={(event) => setApiBaseInput(event.target.value)}
+              placeholder="https://your-backend-domain.com"
+            />
+
+            <div className="app-settings-note">
+              Current frontend target: <strong>{BASE}</strong>
+            </div>
+
+            <div className="app-settings-actions">
+              <button className="app-settings-btn primary" onClick={saveApiSettings}>
+                Save And Reload
+              </button>
+              <button className="app-settings-btn" onClick={resetApiSettings}>
+                Reset Default
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default App;

@@ -1,0 +1,1284 @@
+.qt-root {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: clamp(1.2rem, 3vw, 3rem);
+  position: relative;
+  background: var(--card-bg);
+  border-radius: 2.5rem;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  animation: fadeIn 0.5s ease-out;
+  isolation: isolate;
+}
+
+.dark-theme .qt-root {
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(20px);
+}
+
+/* Unified background effects */
+
+.qt-root>* {
+  position: relative;
+  z-index: 1;
+}
+
+.qt-header {
+  margin-bottom: 1.25rem;
+}
+
+.qt-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.qt-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.qt-header h2 {
+  font-size: clamp(1.65rem, 2.9vw, 2.4rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.qt-header-note {
+  margin: 0.45rem 0 0;
+  color: var(--text-dim);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.qt-reset-btn {
+  min-height: 40px;
+  padding: 0.72rem 0.95rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.86rem;
+  background: color-mix(in srgb, var(--card-bg) 92%, #ffffff 8%);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.qt-status-banner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding: 0.85rem 0.95rem;
+  border-radius: 1rem;
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--card-bg) 90%, #ffffff 10%);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.qt-status-banner.offline {
+  border-color: rgba(245, 158, 11, 0.28);
+  background: rgba(245, 158, 11, 0.08);
+  color: #92400e;
+}
+
+.qt-client-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.82rem;
+  margin-bottom: 1.2rem;
+}
+
+.qt-span-2 {
+  grid-column: span 2;
+}
+
+.qt-field {
+  width: 100%;
+  border-width: 1px;
+  border-radius: 0.86rem;
+  font-size: 0.9rem;
+  padding: 0.82rem 0.95rem;
+  background: color-mix(in srgb, var(--input-bg) 90%, #ffffff 10%);
+}
+
+.qt-field:focus {
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2);
+}
+
+.qt-gst-btn {
+  border: 1px dashed var(--primary-color);
+  background: rgba(190, 30, 45, 0.05);
+  color: var(--primary-color);
+  border-radius: 0.86rem;
+  padding: 0.82rem 0.95rem;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.qt-gst-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 20px -18px rgba(190, 30, 45, 0.7);
+}
+
+.qt-items-section {
+  margin-bottom: 1.4rem;
+}
+
+.qt-items-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 0.85rem;
+}
+
+.qt-items-head h3 {
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+
+.qt-add-row {
+  border: 1px solid rgba(95, 99, 104, 0.35);
+  background: var(--primary-gradient);
+  color: var(--primary-color);
+  border-radius: 0.84rem;
+  padding: 0.72rem 0.96rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 14px 24px -18px rgba(95, 99, 104, 0.65);
+}
+
+.qt-add-row:hover {
+  transform: translateY(-2px);
+}
+
+.qt-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.82rem;
+  overflow: visible;
+}
+
+.qt-item-card {
+  position: relative;
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--card-bg) 90%, #ffffff 10%);
+  border-radius: 1rem;
+  padding: 0.86rem;
+  overflow: visible;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.75),
+    0 20px 32px -28px rgba(15, 23, 42, 0.65);
+  transition: border-color 0.22s ease, transform 0.22s ease, box-shadow 0.24s ease;
+}
+
+.qt-item-card:has(.qt-room-combobox.open) {
+  z-index: 30;
+}
+
+.qt-item-card:hover {
+  border-color: color-mix(in srgb, var(--primary-color) 34%, var(--border-color));
+  transform: translateY(-2px);
+  box-shadow: 0 24px 38px -30px rgba(15, 23, 42, 0.8);
+}
+
+.qt-item-grid {
+  display: grid;
+  grid-template-columns: 72px minmax(180px, 1fr) 150px 110px 60px 80px 80px 80px auto;
+  gap: 0.7rem;
+  align-items: center;
+  margin-bottom: 0.72rem;
+  overflow: visible;
+}
+
+.qt-thumb {
+  width: 72px;
+  height: 72px;
+  border: 1px solid var(--border-color);
+  border-radius: 0.74rem;
+  background: linear-gradient(160deg, #ffffff, #f8fafc);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.qt-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.qt-no-thumb {
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: var(--text-dim);
+}
+
+.qt-name-field {
+  font-weight: 700;
+}
+
+.qt-remove-btn {
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border-radius: 0.72rem;
+  width: 38px;
+  height: 38px;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.qt-remove-btn:hover {
+  transform: translateY(-1px);
+  background: rgba(239, 68, 68, 0.16);
+}
+
+.qt-detail-wrap {
+  border-top: 1px solid var(--border-color);
+  padding-top: 0.72rem;
+}
+
+.qt-detail-area {
+  width: 100%;
+  min-height: 74px;
+  border: 1px solid var(--border-color);
+  border-radius: 0.74rem;
+  background: color-mix(in srgb, var(--card-bg) 92%, #ffffff 8%);
+  color: var(--text-primary);
+  font-size: 0.84rem;
+  line-height: 1.45;
+  padding: 0.7rem 0.82rem;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.qt-detail-area:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2);
+}
+
+.qt-room-field {
+  min-width: 100px;
+  padding-right: 2.5rem;
+}
+
+.qt-room-combobox {
+  position: relative;
+  width: 100%;
+  min-width: 140px;
+}
+
+.qt-room-combobox.open {
+  z-index: 12;
+}
+
+.qt-room-combobox-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0.38rem;
+  transform: translateY(-50%);
+  width: 1.72rem;
+  height: 1.72rem;
+  border: 1px solid color-mix(in srgb, var(--primary-color) 18%, var(--border-color));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--card-bg) 88%, #ffffff 12%);
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: color-mix(in srgb, var(--text-primary) 75%, var(--primary-color));
+  box-shadow: 0 10px 20px -18px rgba(15, 23, 42, 0.45);
+}
+
+.qt-room-combobox-caret {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 7px solid currentColor;
+  transition: transform 0.2s ease;
+}
+
+.qt-room-combobox.open .qt-room-combobox-caret {
+  transform: rotate(180deg);
+}
+
+.qt-room-combobox-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  min-width: 220px;
+  width: 240px;
+  max-width: min(320px, calc(100vw - 2rem));
+  max-height: 220px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.4rem;
+  border: 1px solid color-mix(in srgb, var(--primary-color) 12%, #dbe3ef);
+  border-radius: 1rem;
+  background: #ffffff;
+  box-shadow:
+    0 28px 50px -24px rgba(15, 23, 42, 0.3),
+    0 16px 30px -24px rgba(190, 30, 45, 0.28);
+  z-index: 10000;
+}
+
+.qt-room-combobox-menu.open-up {
+  transform-origin: bottom left;
+}
+
+.qt-room-combobox-option {
+  border: none;
+  background: transparent;
+  border-radius: 0.72rem;
+  padding: 0.68rem 0.78rem;
+  text-align: left;
+  font-size: 0.84rem;
+  color: #172033;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+.qt-room-combobox-option:hover,
+.qt-room-combobox-option.active {
+  background: color-mix(in srgb, var(--primary-color) 9%, #ffffff);
+  color: color-mix(in srgb, var(--primary-color) 74%, #172033);
+}
+
+.qt-room-combobox-option-create {
+  color: var(--primary-color);
+  font-weight: 700;
+  border-bottom: 1px solid color-mix(in srgb, var(--primary-color) 10%, #e2e8f0);
+  margin-bottom: 0.18rem;
+  padding-bottom: 0.76rem;
+}
+
+/* Room Summary Table (Premium Brand Style) */
+.qt-room-summary-table-wrap {
+  margin: 2rem auto;
+  display: flex;
+  justify-content: center;
+}
+
+.qt-room-summary-table {
+  width: 100%;
+  max-width: 500px;
+  border-collapse: collapse;
+  font-family: 'Inter', sans-serif;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+}
+
+.qt-room-summary-table th {
+  background: var(--bg-color);
+  color: var(--text-secondary);
+  padding: 0.8rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-align: left;
+  border-bottom: 2px solid #cbd5e1;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.qt-room-summary-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+.qt-room-summary-table td:last-child {
+  text-align: right;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.qt-room-summary-table tr:hover td {
+  background: color-mix(in srgb, var(--bg-color) 80%, var(--card-bg));
+}
+
+.qt-room-summary-total {
+  background: color-mix(in srgb, var(--primary-color) 5%, var(--bg-color));
+}
+
+.qt-room-summary-total td {
+  font-weight: 800;
+  color: var(--text-primary);
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.qt-room-summary-total td:last-child {
+  color: #be1e2d;
+  /* Matched to main brand reds if needed, or simple deep blue */
+  font-size: 1rem;
+}
+
+/* Overrides removed as CSS variables handle them dynamically */
+/* PDF Options section */
+.qt-pdf-options {
+  margin-bottom: 1.2rem;
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  padding: 1rem 1.1rem;
+  background: color-mix(in srgb, var(--card-bg) 88%, #ffffff 12%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.qt-pdf-options h4 {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin: 0 0 0.85rem 0;
+}
+
+.qt-pdf-opts-row {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  flex-wrap: wrap;
+}
+
+/* Background Logo Checkbox */
+.qt-bg-logo-label {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  user-select: none;
+  white-space: nowrap;
+}
+
+.qt-bg-logo-check {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary-color);
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.qt-bg-logo-icon {
+  font-size: 1.1rem;
+}
+
+.qt-notify-btn {
+  min-height: 40px;
+  padding: 0.68rem 0.9rem;
+  border-radius: 0.86rem;
+  border: 1px solid rgba(14, 165, 233, 0.25);
+  background: rgba(14, 165, 233, 0.08);
+  color: #0f172a;
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.qt-notify-btn.enabled {
+  border-color: rgba(16, 185, 129, 0.28);
+  background: rgba(16, 185, 129, 0.1);
+  color: #047857;
+}
+
+/* Made By section */
+.qt-madeby-section {
+  margin-top: 0.85rem;
+  padding-top: 0.8rem;
+  border-top: 1px dashed var(--border-color);
+}
+
+.qt-madeby-title {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 0.65rem 0;
+}
+
+.qt-madeby-title span {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  margin-left: 0.4rem;
+}
+
+.qt-madeby-fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.qt-madeby-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.qt-madeby-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.qt-madeby-input {
+  flex: 1 !important;
+  width: auto !important;
+}
+
+@media (max-width: 760px) {
+  .qt-madeby-fields {
+    grid-template-columns: 1fr;
+  }
+}
+
+.qt-summary {
+  margin-left: auto;
+  max-width: 510px;
+  border: 1px solid rgba(30, 41, 59, 0.12);
+  background: linear-gradient(140deg, #0f172a, #1e293b);
+  color: #f8fafc;
+  border-radius: 1.4rem;
+  padding: 1rem;
+  box-shadow: 0 28px 44px -30px rgba(2, 6, 23, 0.88);
+}
+
+.qt-summary h4 {
+  color: #94a3b8;
+  margin: 0 0 1rem 0;
+  font-size: 0.86rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.qt-summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+  margin-bottom: 0.72rem;
+}
+
+.qt-summary-row span {
+  font-size: 0.85rem;
+  color: rgba(226, 232, 240, 0.78);
+}
+
+.qt-summary-row strong {
+  font-size: 0.95rem;
+  color: #ffffff;
+}
+
+.qt-summary-row.gst strong {
+  color: #10b981;
+}
+
+.qt-mini-input,
+.qt-mini-select {
+  border: 1px solid rgba(148, 163, 184, 0.46);
+  border-radius: 0.66rem;
+  background: rgba(2, 6, 23, 0.32);
+  color: #f8fafc;
+  width: 102px;
+  text-align: right;
+  padding: 0.42rem 0.55rem;
+  font-size: 0.8rem;
+}
+
+.qt-mini-select {
+  text-align: left;
+}
+
+.qt-mini-input:focus,
+.qt-mini-select:focus {
+  outline: none;
+  border-color: rgba(56, 189, 248, 0.72);
+}
+
+.qt-mini-select option {
+  background: #0f172a;
+  color: #f8fafc;
+}
+
+.qt-total-row {
+  margin-top: 1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.26);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.qt-total-row span {
+  color: rgba(226, 232, 240, 0.7);
+  font-size: 0.94rem;
+  font-weight: 600;
+}
+
+.qt-total-row strong {
+  font-size: 1.26rem;
+  color: #be1e2d;
+  background: #f8fafc;
+  border-radius: 0.76rem;
+  padding: 0.3rem 0.72rem;
+}
+
+.qt-generate-btn {
+  width: 100%;
+  margin-top: 1rem;
+  border: 1px solid rgba(95, 99, 104, 0.35);
+  background: var(--primary-gradient);
+  color: var(--primary-color);
+  border-radius: 0.92rem;
+  padding: 0.82rem 0.95rem;
+  font-size: 0.84rem;
+  letter-spacing: 0.04em;
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.qt-generate-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 30px -20px rgba(95, 99, 104, 0.75);
+}
+
+.qt-pdf-actions {
+  margin-top: 0.86rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.qt-pdf-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.qt-pdf-links a {
+  text-align: center;
+  text-decoration: none;
+  color: #ffffff;
+  border-radius: 0.72rem;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: rgba(148, 163, 184, 0.16);
+  padding: 0.66rem 0.72rem;
+  font-size: 0.77rem;
+  font-weight: 800;
+}
+
+.qt-pdf-links a:last-child {
+  background: var(--primary-gradient);
+  border-color: rgba(95, 99, 104, 0.35);
+  color: var(--primary-color);
+}
+
+.qt-share-btn,
+.qt-edit-btn {
+  border-radius: 0.72rem;
+  padding: 0.68rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.qt-share-btn {
+  border-radius: 0.72rem;
+  padding: 0.68rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  border: 1px solid transparent;
+  color: #ffffff;
+}
+
+/* WhatsApp — official green */
+.qt-wa-btn {
+  background: #25D366;
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 10px 22px -14px rgba(37, 211, 102, 0.8);
+}
+
+.qt-wa-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px -14px rgba(37, 211, 102, 0.9);
+}
+
+.qt-wa-btn-chat {
+  background: #28A745;
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 10px 22px -14px rgba(40, 167, 69, 0.7);
+}
+
+.qt-wa-btn-chat:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px -14px rgba(40, 167, 69, 0.85);
+  background: #229d4f;
+}
+
+/* WhatsApp API button with PDF badge */
+.qt-wa-api-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.qt-pdf-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.25);
+  padding: 0.15rem 0.35rem;
+  border-radius: 0.25rem;
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  margin-left: 0.3rem;
+  backdrop-filter: blur(4px);
+}
+
+/* Gmail — Google red */
+.qt-gmail-btn {
+  background: #EA4335;
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 10px 22px -14px rgba(234, 67, 53, 0.7);
+}
+
+.qt-gmail-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px -14px rgba(234, 67, 53, 0.85);
+}
+
+.qt-system-btn {
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  background: rgba(15, 23, 42, 0.35);
+}
+
+.qt-system-btn:hover {
+  transform: translateY(-1px);
+}
+
+.qt-edit-btn {
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  background: transparent;
+  color: rgba(226, 232, 240, 0.74);
+}
+
+.qt-share-btn:hover,
+.qt-edit-btn:hover {
+  transform: translateY(-1px);
+}
+
+/* Quotation number + date badge */
+.qt-quote-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 0.66rem;
+  padding: 0.52rem 0.72rem;
+  margin-bottom: 0.2rem;
+}
+
+.qt-quote-num {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #e0a020;
+  letter-spacing: 0.04em;
+}
+
+.qt-quote-dt {
+  font-size: 0.76rem;
+  color: rgba(226, 232, 240, 0.7);
+}
+
+/* PDF link buttons with icons */
+.qt-pdf-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  text-align: center;
+  text-decoration: none;
+  color: #ffffff;
+  border-radius: 0.72rem;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  padding: 0.66rem 0.72rem;
+  font-size: 0.77rem;
+  font-weight: 800;
+  transition: transform 0.2s ease;
+}
+
+.qt-pdf-links a:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px -10px rgba(14, 116, 144, 0.4);
+}
+
+.qt-pdf-view {
+  background: linear-gradient(135deg, #0e7490, #06b6d4);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.qt-pdf-download {
+  background: var(--primary-gradient) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+/* Share row grid */
+.qt-share-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.qt-share-row-alt {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.qt-history {
+  margin-top: 2rem;
+}
+
+.qt-history-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--border-color) 20%, var(--border-color) 80%, transparent 100%);
+  margin-bottom: 1rem;
+}
+
+.qt-history-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.qt-count-pill {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  padding: 0.22rem 0.6rem;
+  background: color-mix(in srgb, var(--bg-color) 90%, #ffffff 10%);
+  margin-left: 0.75rem;
+}
+
+.qt-history-search {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: color-mix(in srgb, var(--input-bg) 92%, #ffffff 8%);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem 0.8rem;
+  border-radius: 0.8rem;
+  min-width: 260px;
+  color: var(--text-dim);
+}
+
+.qt-history-search input {
+  background: transparent;
+  border: none;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  width: 100%;
+}
+
+.qt-history-search input:focus {
+  outline: none;
+}
+
+.qt-history-group {
+  margin-bottom: 2rem;
+}
+
+.qt-group-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--primary-color);
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.qt-group-label::after {
+  content: '';
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(90deg, var(--border-color), transparent);
+}
+
+.qt-records-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.qt-record-list-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: color-mix(in srgb, var(--card-bg) 95%, #ffffff 5%);
+  border: 1px solid var(--border-color);
+  padding: 0.75rem 0.9rem;
+  border-radius: 1.1rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.qt-record-list-item:hover {
+  transform: translateX(4px);
+  border-color: color-mix(in srgb, var(--primary-color) 30%, var(--border-color));
+  background: color-mix(in srgb, var(--card-bg) 90%, #ffffff 10%);
+  box-shadow: 0 10px 20px -10px rgba(0,0,0,0.1);
+}
+
+.qt-record-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--bg, #6366f1);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px -4px var(--bg);
+}
+
+.qt-record-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.qt-record-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.qt-record-name {
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.qt-record-date {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  margin-top: 0.15rem;
+}
+
+.qt-record-amount {
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: var(--primary-color);
+  font-family: 'Inter', sans-serif;
+}
+
+.qt-record-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.qt-action-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+  background: transparent;
+}
+
+.qt-action-icon.edit {
+  color: var(--text-secondary);
+  background: rgba(14, 165, 233, 0.06);
+  border-color: rgba(14, 165, 233, 0.1);
+}
+
+.qt-action-icon.edit:hover {
+  background: var(--primary-gradient);
+  color: white;
+  border-color: transparent;
+  transform: scale(1.08);
+}
+
+.qt-action-icon.delete {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.06);
+}
+
+.qt-action-icon.delete:hover {
+  background: #ef4444;
+  color: white;
+  transform: scale(1.08);
+}
+
+.qt-history-empty {
+  border: 1px dashed var(--border-color);
+  border-radius: 1.2rem;
+  padding: 3.5rem 1rem;
+  text-align: center;
+  color: var(--text-dim);
+  background: color-mix(in srgb, var(--card-bg) 70%, transparent 30%);
+}
+
+.qt-history-empty p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.dark-theme .qt-root {
+  border-color: rgba(51, 65, 85, 0.62);
+  background: linear-gradient(156deg, rgba(15, 23, 42, 0.72) 0%, rgba(10, 17, 31, 0.56) 100%);
+}
+
+.dark-theme .qt-item-card,
+.dark-theme .qt-record-card {
+  border-color: #1f2a3a;
+  background: rgba(15, 23, 42, 0.86);
+}
+
+.dark-theme .qt-item-card:hover,
+.dark-theme .qt-record-card:hover {
+  box-shadow: 0 24px 40px -30px rgba(2, 6, 23, 0.95);
+}
+
+.dark-theme .qt-thumb {
+  background: linear-gradient(160deg, #121a2b, #0f172a);
+  border-color: #1f2a3a;
+}
+
+.dark-theme .qt-detail-wrap {
+  border-top-color: #1f2a3a;
+}
+
+.dark-theme .qt-detail-area,
+.dark-theme .qt-field {
+  background: #0b1220;
+  border-color: #1f2a3a;
+}
+
+.dark-theme .qt-history-title span {
+  background: rgba(15, 23, 42, 0.72);
+  border-color: #1f2a3a;
+}
+
+.dark-theme .qt-history-empty {
+  background: rgba(15, 23, 42, 0.48);
+}
+
+.dark-theme .qt-reset-btn {
+  background: rgba(15, 23, 42, 0.7);
+  border-color: #334155;
+  color: #e2e8f0;
+}
+
+.dark-theme .qt-status-banner {
+  background: rgba(15, 23, 42, 0.76);
+  border-color: #243246;
+  color: #e2e8f0;
+}
+
+.dark-theme .qt-status-banner.offline {
+  color: #facc15;
+}
+
+.dark-theme .qt-notify-btn {
+  background: rgba(14, 165, 233, 0.18);
+  border-color: rgba(14, 165, 233, 0.28);
+  color: #e0f2fe;
+}
+
+.dark-theme .qt-notify-btn.enabled {
+  background: rgba(16, 185, 129, 0.16);
+  border-color: rgba(16, 185, 129, 0.28);
+  color: #a7f3d0;
+}
+
+@media (max-width: 1280px) {
+  .qt-item-grid {
+    grid-template-columns: 62px minmax(200px, 1fr) 138px 88px 94px auto;
+  }
+}
+
+@media (max-width: 980px) {
+  .qt-client-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .qt-span-2 {
+    grid-column: span 1;
+  }
+
+  .qt-item-grid {
+    grid-template-columns: 70px 1fr 1fr;
+    gap: 0.58rem;
+  }
+
+  .qt-item-grid .qt-field:nth-child(3),
+  .qt-item-grid .qt-field:nth-child(4),
+  .qt-item-grid .qt-field:nth-child(5) {
+    min-width: 0;
+  }
+
+  .qt-remove-btn {
+    width: 100%;
+    height: 36px;
+  }
+
+  .qt-summary {
+    max-width: none;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .qt-root {
+    width: calc(100vw - 0.55rem);
+    max-width: calc(100vw - 0.55rem);
+    padding: 0.72rem;
+    border-radius: 1.2rem;
+  }
+
+  .qt-header {
+    margin-bottom: 0.85rem;
+  }
+
+  .qt-header-row {
+    flex-direction: column;
+  }
+
+  .qt-items-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .qt-add-row {
+    width: 100%;
+  }
+
+  .qt-item-card,
+  .qt-history-empty,
+  .qt-record-card,
+  .qt-summary {
+    border-radius: 0.96rem;
+  }
+
+  .qt-item-grid {
+    grid-template-columns: 56px 1fr;
+    gap: 0.54rem;
+  }
+
+  .qt-item-grid .qt-field {
+    grid-column: span 2;
+  }
+
+  .qt-item-grid .qt-room-combobox {
+    grid-column: span 2;
+  }
+
+  .qt-item-grid .qt-name-field {
+    grid-column: span 2;
+  }
+
+  .qt-thumb {
+    width: 56px;
+    height: 56px;
+  }
+
+  .qt-remove-btn {
+    grid-column: span 2;
+  }
+
+  .qt-pdf-links {
+    grid-template-columns: 1fr;
+  }
+
+  .qt-share-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.qt-discount-input-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.qt-discount-toggle-buttons {
+  display: flex;
+  border: 1px solid rgba(148, 163, 184, 0.46);
+  border-radius: 0.66rem;
+  overflow: hidden;
+  background: rgba(2, 6, 23, 0.32);
+  padding: 2px;
+}
+
+.qt-discount-toggle-btn {
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  cursor: pointer;
+  border-radius: 0.45rem;
+  transition: all 0.2s;
+}
+
+.qt-discount-toggle-btn.active {
+  background: var(--primary-color, #be1e2d);
+  color: #ffffff;
+}
+
+.qt-discount-toggle-btn:hover:not(.active) {
+  color: #f8fafc;
+  background: rgba(255, 255, 255, 0.08);
+}

@@ -1,0 +1,18 @@
+2026-05-05 15:09:17.263550 - Starting _load_model_background
+2026-05-05 15:09:17.264292 - Importing SentenceTransformer
+2026-05-05 15:09:48.707929 - load_index(force=False)
+2026-05-05 15:10:04.756752 - Starting _load_model_background
+2026-05-05 15:10:04.756867 - load_index(force=False)
+2026-05-05 15:10:04.757486 - Importing SentenceTransformer
+2026-05-05 15:10:04.787944 - load_index(force=False)
+2026-05-05 15:10:19.933886 - Loading all-MiniLM-L6-v2
+2026-05-05 15:10:38.121426 - Model loaded. Locking...
+2026-05-05 15:10:38.123538 - Semantic Model Loaded OK.
+2026-05-05 15:12:17.250902 - load_index(force=False)
+2026-05-05 15:14:27.326838 - load_index(force=False)
+2026-05-05 15:14:40.604018 - load_index(force=False)
+2026-05-05 15:14:40.638573 - load_index(force=False)
+2026-05-11 10:57:08.836776 - Syncing index files...
+2026-05-11 10:57:08.855890 - Syncing done.
+2026-05-11 11:10:21.773488 - Syncing index files...
+2026-05-11 11:10:21.785813 - Syncing done.

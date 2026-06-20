@@ -1,0 +1,17 @@
+services:
+  # ── Backend: FastAPI ─────────────────────────────────────────────────────────
+  - type: web
+    name: quotation-ai-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: IS_CLOUD
+        value: "true"
+    disk:
+      name: quotation-data
+      mountPath: /opt/render/project/src
+      sizeGB: 2

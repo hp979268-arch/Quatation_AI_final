@@ -1,0 +1,108 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+*.egg
+
+# Virtual Environments
+backend/venv/
+venv/
+env/
+.venv/
+
+# Search index v1 only (v2 is needed for deployment)
+backend/search_index.json
+
+# Uploaded PDFs (large binary — re-upload manually on server)
+backend/uploads/*.pdf
+
+# Generated quotes
+backend/quotation.pdf
+backend/test_quote.pdf
+backend/test_catalog.pdf
+backend/static/quotes/
+
+# Log files
+backend/*.log
+backend/backend_log.txt
+backend/backend_debug.log
+backend/run_backend.err.log
+backend/run_backend.out.log
+frontend/run_frontend.err.log
+frontend/run_frontend.out.log
+app_stdout.log
+app_stderr.log
+debug.log
+
+# Node modules
+frontend/node_modules/
+node_modules/
+
+# React build output & old builds
+frontend/build/
+frontend/build_*/
+frontend/dist_client/
+frontend/dist-electron/
+frontend/android/
+frontend/ios/
+
+# Electron desktop app bundles (large, not needed for web)
+frontend/backend_sidecar_internal/
+Quotation_AI_Software_Final/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary & scratch files
+backend/tmp_*/
+tmp_crops/
+dir_output.txt
+backend/out.txt
+backend/debug_out.txt
+backend/debug_layout.txt
+backend/aquant_raw_dump.txt
+backend/7006_out.txt
+backend/grouping_log*.txt
+backend/test_grouping.txt
+backend/test_catalog.txt
+backend/kohler_image_*.csv
+backend/kohler_k_code_*.csv
+backend/quotes_image_report.csv
+backend/image_path_cache.json
+
+# Backup files
+main_backup.py
+main_backup_utf8.py
+main_original.py
+backend/main_original.py
+backend/scratch/autofix_out*.txt
+backend/scratch/audit_out*.txt
+backend/scratch/pg_check.txt
+backend/scratch/last5_search.txt
+backend/scratch/verify_images_out.txt
+backend/scratch/fix_704703_result.txt
+backend/scratch/kohler_sample.txt
+backend/scratch/check704703.txt
+backend/scratch/index_format.txt
+backend/scratch/audit_summary.txt
+backend/scratch/autofix_p2_out.txt
+backend/scratch/
+backend/static/images/Aquant/Aquant_Page_*.png
+backend/static/images/Aquant/*_new.png
+
