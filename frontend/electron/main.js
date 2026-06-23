@@ -61,10 +61,12 @@ function startSidecar() {
 
   sidecarProcess.stdout.on('data', (data) => {
     console.log(`Backend: ${data}`);
+    logLine(`Backend: ${data}`);
   });
 
   sidecarProcess.stderr.on('data', (data) => {
     console.error(`Backend Error: ${data}`);
+    logLine(`Backend Error: ${data}`);
   });
 
   sidecarProcess.on('close', (code) => {
