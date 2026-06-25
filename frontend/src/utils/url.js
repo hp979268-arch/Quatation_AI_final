@@ -2,7 +2,7 @@ import BASE from '../api';
 
 const ABSOLUTE_PROTOCOL = /^(https?:|data:|blob:)/i;
 const STATIC_IMAGE_PATH = /\/static\/images\//i;
-const CACHE_BUSTER = 'v=20260623_live';
+const CACHE_BUSTER = 'v=20260625_live_2';
 
 export function isAbsoluteUrl(value) {
   return ABSOLUTE_PROTOCOL.test(String(value || '').trim());
