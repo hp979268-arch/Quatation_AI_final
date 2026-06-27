@@ -718,6 +718,72 @@ def generate_quote(data):
         ]))
         elements.append(foot_table)
 
+    # ── 6. Extra Footer Images (Permanent for BOTH with & without letterhead) ────
+    target_names = [
+        "Mirror.jpeg",
+        "Cleaner.jpeg",
+        "Floor drain.jpeg",
+        "Glass partition.jpeg",
+        "Accessories.jpeg",
+        "Steam generator & controller.jpeg"
+    ]
+    
+    valid_items = []
+    name_style = ParagraphStyle('ExtraImgName', parent=styles['Normal'], fontSize=11, fontName='Helvetica-Bold', alignment=1, textColor=colors.HexColor("#334155"))
+    
+    for filename in target_names:
+        p = os.path.join(base_dir, "static", filename)
+        if os.path.exists(p):
+            valid_items.append({
+                "path": p,
+                "name": os.path.splitext(filename)[0]
+            })
+            
+    if valid_items:
+        elements.append(Spacer(1, 20))
+        table_data = []
+        
+        for i in range(0, len(valid_items), 2):
+            row_items = valid_items[i:i+2]
+            img_row = []
+            name_row = []
+            
+            for item in row_items:
+                try:
+                    # Reduced size from 200x200 to 140x140
+                    img = RLImage(item["path"], width=140, height=140, kind='proportional')
+                    img_row.append(img)
+                    name_row.append(Paragraph(item["name"], name_style))
+                except Exception:
+                    img_row.append("")
+                    name_row.append("")
+                    
+            while len(img_row) < 2:
+                img_row.append("")
+                name_row.append("")
+                
+            table_data.append(img_row)
+            table_data.append(name_row)
+            
+        col_w = 515 / 2
+        img_table = Table(table_data, colWidths=[col_w, col_w])
+        
+        # Style for multiple rows: every even row index is images, odd is names
+        t_style = [
+            ('ALIGN', (0,0), (-1,-1), 'CENTER'),
+        ]
+        
+        for row_idx in range(len(table_data)):
+            if row_idx % 2 == 0:
+                t_style.append(('VALIGN', (0, row_idx), (-1, row_idx), 'BOTTOM'))
+            else:
+                t_style.append(('VALIGN', (0, row_idx), (-1, row_idx), 'TOP'))
+                t_style.append(('TOPPADDING', (0, row_idx), (-1, row_idx), 6))
+                t_style.append(('BOTTOMPADDING', (0, row_idx), (-1, row_idx), 20)) # Space before next row of images
+                
+        img_table.setStyle(TableStyle(t_style))
+        elements.append(img_table)
+
 
     # Build
     doc.build(elements, onFirstPage=draw_background, onLaterPages=draw_background)
