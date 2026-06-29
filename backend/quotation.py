@@ -3,7 +3,7 @@ import sys
 import urllib.request
 from datetime import datetime
 from html import escape
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle, Spacer, Image as RLImage, HRFlowable, Flowable
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle, Spacer, Image as RLImage, HRFlowable, Flowable, PageBreak
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
@@ -740,48 +740,68 @@ def generate_quote(data):
             })
             
     if valid_items:
-        elements.append(Spacer(1, 20))
+        # Force title + all images onto a fresh page
+        elements.append(PageBreak())
+
+        # ── "Supporting Items" heading ──────────────────────────────────────
+        supporting_title_style = ParagraphStyle(
+            'SupportingTitle',
+            parent=styles['Normal'],
+            fontSize=13,
+            fontName='Helvetica-Bold',
+            textColor=colors.HexColor("#1e293b"),
+            spaceAfter=14,
+            spaceBefore=4,
+            alignment=1,           # centred
+        )
+        # Decorative underline via a thin horizontal rule below the heading
+        heading_block = [
+            Paragraph("Supporting Items", supporting_title_style),
+            HRFlowable(width="100%", thickness=1.5, color=colors.HexColor("#f59e0b"), spaceAfter=16),
+        ]
+
         table_data = []
-        
+
         for i in range(0, len(valid_items), 2):
             row_items = valid_items[i:i+2]
             img_row = []
             name_row = []
-            
+
             for item in row_items:
                 try:
-                    # Reduced size from 200x200 to 140x140
                     img = RLImage(item["path"], width=140, height=140, kind='proportional')
                     img_row.append(img)
                     name_row.append(Paragraph(item["name"], name_style))
                 except Exception:
                     img_row.append("")
                     name_row.append("")
-                    
+
             while len(img_row) < 2:
                 img_row.append("")
                 name_row.append("")
-                
+
             table_data.append(img_row)
             table_data.append(name_row)
-            
+
         col_w = 515 / 2
         img_table = Table(table_data, colWidths=[col_w, col_w])
-        
-        # Style for multiple rows: every even row index is images, odd is names
+
+        # Style: even rows = images, odd rows = names
         t_style = [
             ('ALIGN', (0,0), (-1,-1), 'CENTER'),
         ]
-        
         for row_idx in range(len(table_data)):
             if row_idx % 2 == 0:
                 t_style.append(('VALIGN', (0, row_idx), (-1, row_idx), 'BOTTOM'))
             else:
                 t_style.append(('VALIGN', (0, row_idx), (-1, row_idx), 'TOP'))
                 t_style.append(('TOPPADDING', (0, row_idx), (-1, row_idx), 6))
-                t_style.append(('BOTTOMPADDING', (0, row_idx), (-1, row_idx), 20)) # Space before next row of images
-                
+                t_style.append(('BOTTOMPADDING', (0, row_idx), (-1, row_idx), 20))
+
         img_table.setStyle(TableStyle(t_style))
+
+        # Keep heading + image table together on the same page
+        elements.extend(heading_block)
         elements.append(img_table)
 
 
