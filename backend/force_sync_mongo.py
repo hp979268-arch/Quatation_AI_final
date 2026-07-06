@@ -5,7 +5,8 @@ import pymongo
 
 load_dotenv()
 
-MONGO_URI = "mongodb+srv://admin:admin123@cluster0.5dxlcpj.mongodb.net/?appName=Cluster0"
+# Use .env URI (production cluster). Fallback to old hardcoded URI for safety.
+MONGO_URI = os.getenv("MONGO_URI") or "mongodb+srv://admin:admin123@cluster0.5dxlcpj.mongodb.net/?appName=Cluster0"
 INDEX_FILE = "backend/search_index_v2.json"
 
 def main():
