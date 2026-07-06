@@ -1,0 +1,113 @@
+=== PRICE FIXES ===
+FIXED: 1501 | 15250 -> 20990 | pg91 Full Frame cistern
+FIXED: 1506 | 9500 -> 27500 | pg86 Smart toilet cistern
+FIXED: 1507 GG | 33500 -> 17750 | pg91 flush plate
+FIXED: 1507 BG | 33500 -> 17750 | pg91 flush plate
+FIXED: 1507 MB | 33500 -> 17750 | pg91 flush plate
+FIXED: 1507 BRG | 33500 -> 17750 | pg91 flush plate
+FIXED: 1947 | 5300 -> 43500 | pg85 under counter basin
+FIXED: 9057 | 75500 -> 99000 | pg66 Konig stone basin
+FIXED: 1258 | 63000 -> 41000 | pg56 Revive shower panel
+FIXED: 1257 | 41000 -> 38500 | pg56 Retro shower panel
+FIXED: 1256 | 38500 -> 70000 | pg56 Eden shower panel
+FIXED: 1245 | 70000 -> 74500 | pg56 Divine shower panel
+FIXED: 1439 | 1160 -> 57500 | pg57 Fleur shower column
+FIXED: 28088 | 21250 -> 120 | pg61 ABS wall hook
+FIXED: 28197 | 4500 -> 700 | pg54 ABS head shower 110mm
+FIXED: 28198 | 4500 -> 700 | pg54 ABS hand shower 100mm
+FIXED: 1151 | 1175 -> 220 | pg63 hose 300mm
+FIXED: 1152 | 1175 -> 240 | pg63 hose 450mm
+FIXED: 1153 | 1175 -> 260 | pg63 hose 600mm
+FIXED: 1460 | 2100 -> 500 | pg63 WC connector 125mm
+FIXED: 1462 | 2100 -> 550 | pg63 WC connector 250mm
+FIXED: 1487 | 2100 -> 500 | pg63 WC offset connector
+FIXED: 1461 | 2400.00 -> 80 | pg63 WC rubber washer
+FIXED: 1010 | 2400 -> 950 | pg63 liquid cleaner
+FIXED: 1436 BRG | 11250 -> 4750 | pg59 shower drainer BRG
+FIXED: 1436 BG | 11250 -> 4750 | pg59 shower drainer BG
+FIXED: 1436 GG | 11250 -> 4750 | pg59 shower drainer GG
+FIXED: 1436 MB | 11250 -> 4750 | pg59 shower drainer MB
+FIXED: 1318 BRG | 17500 -> 4250 | pg59 tile insert 100mm BRG
+FIXED: 1318 BG | 17500 -> 4250 | pg59 tile insert 100mm BG
+FIXED: 1318 GG | 17500 -> 4250 | pg59 tile insert 100mm GG
+FIXED: 1318 MB | 17500 -> 4250 | pg59 tile insert 100mm MB
+FIXED: 1319 BRG | 17750 -> 7000 | pg59 tile insert 150mm BRG
+FIXED: 1319 BG | 17750 -> 7000 | pg59 tile insert 150mm BG
+FIXED: 1319 GG | 17750 -> 7000 | pg59 tile insert 150mm GG
+FIXED: 1319 MB | 17750 -> 7000 | pg59 tile insert 150mm MB
+FIXED: 7011 BRG | 7250 -> 35000 | pg44 SS niche BRG
+FIXED: 7011 BG | 7250 -> 35000 | pg44 SS niche BG
+FIXED: 7011 GG | 7250 -> 35000 | pg44 SS niche GG
+FIXED: 7011 MB | 7250 -> 35000 | pg44 SS niche MB
+FIXED: 2650 BRG | 4000 -> 7250 | pg44 dustbin BRG
+FIXED: 2650 BG | 4000 -> 7250 | pg44 dustbin BG
+FIXED: 2650 GG | 4000 -> 7250 | pg44 dustbin GG
+FIXED: 2650 MB | 4000 -> 7250 | pg44 dustbin MB
+FIXED: 2750 BRG | 14500 -> 7250 | pg48 double tower bar
+FIXED: 2750 BG | 14500 -> 7250 | pg48 double tower bar
+FIXED: 2750 GG | 14500 -> 7250 | pg48 double tower bar
+FIXED: 2750 MB | 14500 -> 7250 | pg48 double tower bar
+FIXED: 2728 BRG | 6000 -> 5500 | pg47 toilet brush holder
+FIXED: 2728 BG | 6000 -> 5500 | pg47 toilet brush holder
+FIXED: 2728 GG | 6000 -> 5500 | pg47 toilet brush holder
+FIXED: 2728 MB | 6000 -> 5500 | pg47 toilet brush holder
+FIXED: 2728 RG | 6000 -> 5500 | pg47 toilet brush holder
+FIXED: 2726 BRG | 5000 -> 3550 | pg47 tumbler holder
+FIXED: 2726 BG | 5000 -> 3550 | pg47 tumbler holder
+FIXED: 2726 GG | 6000 -> 3550 | pg47 tumbler holder
+FIXED: 2726 MB | 6000 -> 3550 | pg47 tumbler holder
+FIXED: 2726 RG | 6000 -> 3550 | pg47 tumbler holder
+FIXED: 2729 BRG | 3950 -> 2950 | pg47 toilet roll holder
+FIXED: 2729 BG | 3950 -> 2950 | pg47 toilet roll holder
+FIXED: 2729 GG | 5500 -> 2950 | pg47 toilet roll holder
+FIXED: 2729 MB | 5500 -> 2950 | pg47 toilet roll holder
+FIXED: 2729 RG | 5500 -> 2950 | pg47 toilet roll holder
+FIXED: 2721 BRG | 4250 -> 1950 | pg46 robe hook
+FIXED: 2721 BG | 4250 -> 1950 | pg46 robe hook
+FIXED: 2721 GG | 2650 -> 1950 | pg46 robe hook
+FIXED: 2721 MB | 2650 -> 1950 | pg46 robe hook
+FIXED: 2721 RG | 2650 -> 1950 | pg46 robe hook
+FIXED: 1472 BRG | 29950 -> 28250 | pg45 brass mirror LED
+FIXED: 1472 BG | 29950 -> 28250 | pg45 brass mirror LED
+FIXED: 1472 GG | 29950 -> 28250 | pg45 brass mirror LED
+FIXED: 1472 MB | 29950 -> 28250 | pg45 brass mirror LED
+FIXED: 1472 RG | 29950 -> 28250 | pg45 brass mirror LED
+FIXED: 2106 BRG | 59000 -> 65000 | pg30 4-outlet diverter BRG
+FIXED: 2106 BG | 59000 -> 65000 | pg30 4-outlet diverter BG
+FIXED: 2104 BRG | 42000 -> 59000 | pg30 3-outlet diverter BRG
+FIXED: 2104 BG | 42000 -> 59000 | pg30 3-outlet diverter BG
+FIXED: 2122 BRG | 123750 -> 115000 | pg28 4-outlet thermostat BRG
+FIXED: 2122 BG | 123750 -> 115000 | pg28 4-outlet thermostat BG
+FIXED: 2122 GG | 197500 -> 115000 | pg28 4-outlet thermostat GG
+FIXED: 2122 MB | 197500 -> 115000 | pg28 4-outlet thermostat MB
+FIXED: 2122 RG | 197500 -> 115000 | pg28 4-outlet thermostat RG
+FIXED: 2114 GG | 215000 -> 138500 | pg29 4-outlet switch thermostat GG
+FIXED: 2114 MB | 215000 -> 138500 | pg29 4-outlet switch thermostat MB
+FIXED: 2114 RG | 215000 -> 138500 | pg29 4-outlet switch thermostat RG
+
+=== ADDED PRODUCTS ===
+ADDED: 30006 CP @ 575
+ADDED: 30007 CP @ 690
+ADDED: 30006 BRG @ 1700
+ADDED: 30007 BRG @ 1850
+ADDED: 30006 BG @ 1700
+ADDED: 30007 BG @ 1850
+ADDED: 30006 GG @ 1700
+ADDED: 30007 GG @ 1850
+ADDED: 30006 MB @ 1700
+ADDED: 30007 MB @ 1850
+ADDED: 30006 RG @ 1700
+ADDED: 30007 RG @ 1850
+ADDED: 1419 BRG @ 8250
+ADDED: 1419 BG @ 8250
+ADDED: 1419 GG @ 8250
+ADDED: 1419 MB @ 8250
+ADDED: 1186 BRG @ 5250
+ADDED: 1186 BG @ 5250
+ADDED: 1186 GG @ 5250
+ADDED: 1186 MB @ 5250
+ADDED: 1186 RG @ 5250
+ADDED: 1418 RG @ 8250
+ADDED: 2741 RG @ 6000
+ADDED: 1424-200 CP @ 2500
+ADDED: 1424-500 CP @ 5500

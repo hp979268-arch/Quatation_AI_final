@@ -1,0 +1,5 @@
+1505 BRG price (15250.0) is MORE THAN 3X CP price (3590.0)
+1505 BG price (15250.0) is MORE THAN 3X CP price (3590.0)
+1505 GG price (15250.0) is MORE THAN 3X CP price (3590.0)
+1505 MB price (15250.0) is MORE THAN 3X CP price (3590.0)
+1505 RG price (15250.0) is MORE THAN 3X CP price (3590.0)
