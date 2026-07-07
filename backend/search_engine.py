@@ -88,6 +88,7 @@ CACHE_SCHEMA_VERSION = 2
 HARD_PLACEHOLDER_CODES = {
     "K-24740IN-7", "K-24740IN-K4", "K-17663IN-0", "K-82958",
     "K-1042534", "K-1060831", "K-1063956", "K-1286731",
+    "750080 TL",
 }
 HARD_PLACEHOLDER_IMAGE = "/static/images/Kohler/Image_Not_Found.png"
 
@@ -1528,6 +1529,34 @@ def search(query: str, smart: bool = False, brand: str = None):
             best = 0.0
             quality_bonus = _item_quality_bonus(item)
 
+            # Check if it's a compatible accessory/part
+            is_compatible = False
+            v_compact = item_code_meta.get("variant_compact", "")
+            if v_compact:
+                if query_full_compact and query_full_compact in v_compact:
+                    is_compatible = True
+                elif query_base_compact and query_base_compact in v_compact:
+                    is_compatible = True
+
+            if not is_compatible:
+                name_clean = name_lower
+                text_clean = text_lower
+                has_comp_indicator = (
+                    "compatible" in name_clean or 
+                    "compatible" in text_clean or 
+                    "for " in name_clean or
+                    "extra" in name_clean or
+                    "extra" in text_clean
+                )
+                if has_comp_indicator:
+                    if query_full_compact and (query_full_compact in name_clean or query_full_compact in text_clean):
+                        is_compatible = True
+                    elif query_base_compact and (query_base_compact in name_clean or query_base_compact in text_clean):
+                        is_compatible = True
+
+            if is_compatible:
+                best = max(best, 2800.0 + quality_bonus)
+
             # If the query points at a specific base code, keep strict matching
             # inside that family so combo products like "1334 BG + 1333" do not
             # leak into a plain "1333" search.
@@ -1538,7 +1567,9 @@ def search(query: str, smart: bool = False, brand: str = None):
                 q_clean = _clean_kohler_numeric_code(query_base_compact)
                 i_clean = _clean_kohler_numeric_code(item_base_compact)
                 
-                if q_clean and q_clean == i_clean:
+                if is_compatible:
+                    pass
+                elif q_clean and q_clean == i_clean:
                     pass
                 elif item_base_compact.endswith(query_base_compact):
                     pass
