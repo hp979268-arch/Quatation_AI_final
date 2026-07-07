@@ -3,6 +3,8 @@ import json, re, sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'backend'))
 os.chdir(os.path.join(os.path.dirname(__file__), 'backend'))
 
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
 import search_engine
 import mongodb
 
@@ -32,7 +34,7 @@ for i in indices:
 # Push to MongoDB
 new_data = {'stored_items': search_engine.stored_items, 'keyword_index': search_engine.keyword_index}
 with open('search_index_v2.json', 'w', encoding='utf-8') as f:
-    json.dump(new_data, f, separators=(',', ':'))
+    json.dump(new_data, f, ensure_ascii=False, indent=2)
 
 mongodb.save_search_index(new_data)
 print(f'Pushed to MongoDB successfully!')

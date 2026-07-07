@@ -1,3 +1,4 @@
+# Reload trigger for search logic updates
 print("--- BACKEND STARTING ---")
 from dotenv import load_dotenv
 load_dotenv()
@@ -718,12 +719,14 @@ async def refresh_catalogs():
                 search_engine.keyword_index = _mongo_data.get("keyword_index", {})
                 search_engine._suggestion_cache.clear()
                 search_engine.item_code_meta_cache.clear()
+                search_engine.search_cache.clear()
                 return {"message": f"Index reloaded from MongoDB with {len(search_engine.stored_items)} items."}
         except Exception as e:
             print(f"Warning: MongoDB refresh failed, falling back to disk: {e}")
     search_engine.load_index(force=True)
     search_engine._suggestion_cache.clear()
     search_engine.item_code_meta_cache.clear()
+    search_engine.search_cache.clear()
     return {"message": "Index reloaded from disk."}
 
 @app.get("/debug")

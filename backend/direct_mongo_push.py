@@ -6,7 +6,7 @@ import pymongo
 import os
 
 MONGO_URI = "mongodb+srv://hp979268_db_user:PQo6mPT7DugIoi4f@cluster0.wkcfszp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-INDEX_PATH = r"c:\Movies\quotation-ai\quotation-ai\backend\search_index_v2.json"
+INDEX_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "search_index_v2.json")
 
 print("Connecting to MongoDB...")
 try:
