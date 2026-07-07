@@ -973,14 +973,10 @@ def _best_item_image(item):
     candidate_codes = [c for c in candidate_codes if c]
     image_cache = _build_image_path_cache()
 
-    # Hard-coded placeholder handling
+    # Hard-coded placeholder handling — always return None for these codes
     for code in candidate_codes:
         if code in HARD_PLACEHOLDER_CODES:
-            compact = _compact_alnum(code)
-            if compact and compact in image_cache:
-                pass
-            else:
-                return None
+            return None
 
 
 
