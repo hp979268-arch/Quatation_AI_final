@@ -20,6 +20,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "dev": "react-scripts start",
     "build": "react-scripts build",
     "build:app": "cmd /c \"set BUILD_PATH=build_app&& react-scripts build\"",
     "desktop:start": "electron electron/main.js",

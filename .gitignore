@@ -109,3 +109,5 @@ backend/static/images/Aquant/*_new.png
 
 dist/
 win-unpacked/
+build/
+
