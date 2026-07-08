@@ -16812,13 +16812,14 @@
             "page": 63,
             "source": "Aquant Price List Vol 15. Feb 2026_Searchable",
             "images": [
-                "/static/images/Aquant/1487.png?v=11"
+                "/static/images/Aquant/1487.png?v=12"
             ],
             "brand": "Aquant",
             "category": "BATH COMPONENTS",
             "base_code": "1487",
             "variant_code": "",
-            "search_code": "1487"
+            "search_code": "1487",
+            "image": "/static/images/Aquant/1487.png?v=12"
         },
         {
             "text": "1010 - PVC Bottle Trap\nPVC Bottle Trap",
@@ -148915,5 +148916,5 @@
             2938
         ]
     },
-    "version": "1783499883"
+    "version": "1783499884"
 }
