@@ -11,7 +11,7 @@ A full-stack Quotation Management System for Shreeji Ceramica built with **FastA
 
 ## Live Demo
 
-https://quotation-ai-mu.vercel.app
+https://shreejiceramica.vercel.app
 
 ## 🚀 Deploy on Render
 
