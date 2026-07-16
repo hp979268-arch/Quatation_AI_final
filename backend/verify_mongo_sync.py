@@ -3,11 +3,12 @@ import sys
 import os
 from dotenv import load_dotenv
 
-sys.path.insert(0, r'c:\Movies\quotation-ai\quotation-ai\backend')
-load_dotenv(r"c:\Movies\quotation-ai\quotation-ai\backend\.env", override=True)
+backend_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, backend_dir)
+load_dotenv(os.path.join(backend_dir, '.env'), override=True)
 import mongodb
 
-with open(r'c:\Movies\quotation-ai\quotation-ai\backend\search_index_v2.json', 'r', encoding='utf-8') as f:
+with open(os.path.join(backend_dir, 'search_index_v2.json'), 'r', encoding='utf-8') as f:
     local_data = json.load(f)
 
 print('Local Index Version:', local_data.get('version'))
