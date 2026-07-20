@@ -156,13 +156,27 @@ def _resolve_item_image(base_dir, item):
     )
     return Paragraph("No Image", no_image_style)
 
-def _build_item_description(item, styles):
-    name_str = str(item.get("name") or "Unknown Item").strip()
+def _extract_item_code_and_clean_desc(item):
+    name = str(item.get("name") or "").strip()
     sku = str(item.get("sku") or item.get("search_code") or item.get("code") or "").strip()
     
-    if sku and not name_str.lower().startswith(sku.lower()):
-        name_str = f"{sku} - {name_str}"
+    if not sku:
+        dash_index = name.find(" - ")
+        if dash_index > 0:
+            first_part = name[:dash_index].strip()
+            if any(c.isdigit() for c in first_part) and len(first_part) < 25:
+                sku = first_part
+                name = name[dash_index + 3:].strip()
+    else:
+        if name.lower().startswith(sku.lower() + " - "):
+            name = name[len(sku) + 3:].strip()
+        elif name.lower().startswith(sku.lower()):
+            name = name[len(sku):].strip().lstrip("-").strip()
 
+    return sku, name
+
+def _build_item_description(item, styles):
+    _, name_str = _extract_item_code_and_clean_desc(item)
     raw = str(item.get("rawText") or "").strip()
     
     extra_lines = []
@@ -356,7 +370,6 @@ def generate_quote(data):
     elements.append(Spacer(1, 25))
 
     # ── 4. Items Table section ─────────────────────────────────────────────
-    # Reverting to EXACT image format: S.No, Image, Item Description, Qty, Price, Disc(%), Amount
     room_sections = []
     room_lookup = {}
     for item in items:
@@ -434,11 +447,13 @@ def generate_quote(data):
                 disc = _to_float(item.get("discount"), 0.0)
                 amount = _line_total(item)
 
+                code_val, _ = _extract_item_code_and_clean_desc(item)
+
                 row_cells = [
                     str(item_index),
                     _resolve_item_image(base_dir, item),
                     _build_item_description(item, styles),
-                    Paragraph(escape(str(item.get("sku") or "-")), section_cell_style),
+                    Paragraph(escape(str(item.get("sku") or code_val or "-")), section_cell_style),
                     Paragraph(escape(str(item.get("size") or "-")), section_cell_style),
                     Paragraph(escape(_format_quantity(qty)), section_cell_style),
                     Paragraph(escape(f"Rs. {price:,.2f}"), section_cell_style),
@@ -541,14 +556,23 @@ def generate_quote(data):
         elements.append(overall_totals_table)
         elements.append(Spacer(1, 18))
     else:
-        # Only show discount column if at least one item has a discount > 0
+        bold_code_style = ParagraphStyle(
+            'CodeStyle',
+            parent=styles['Normal'],
+            fontName='Helvetica-Bold',
+            fontSize=8,
+            leading=10,
+            textColor=colors.HexColor("#0f2f57"),
+            alignment=1,
+        )
+
         show_disc_col = any(_to_float(item.get("discount"), 0.0) > 0 for item in items)
         if show_disc_col:
-            header_row = ["S.No", "Image", "Item Description", "Qty", "Price", "Disc(%)", "Amount"]
-            col_widths = [30, 60, 215, 45, 80, 45, 75]
+            header_row = ["S.No", "Image", "Code", "Item Description", "Qty", "Price", "Disc(%)", "Amount"]
+            col_widths = [25, 55, 65, 175, 30, 65, 40, 65]
         else:
-            header_row = ["S.No", "Image", "Item Description", "Qty", "Price", "Amount"]
-            col_widths = [30, 60, 260, 45, 80, 75]
+            header_row = ["S.No", "Image", "Code", "Item Description", "Qty", "Price", "Amount"]
+            col_widths = [30, 60, 75, 205, 35, 65, 75]
 
         table_data = [header_row]
         
@@ -557,10 +581,13 @@ def generate_quote(data):
             price = _to_float(item.get("price"), 0.0)
             disc = _to_float(item.get("discount"), 0.0)
             amount = _line_total(item)
+
+            code_val, _ = _extract_item_code_and_clean_desc(item)
             
             row = [
                 str(idx + 1),
                 _resolve_item_image(base_dir, item),
+                Paragraph(f"<b>{escape(code_val)}</b>" if code_val else "-", bold_code_style),
                 _build_item_description(item, styles),
                 _format_quantity(qty),
                 f"{price:,.2f}",
