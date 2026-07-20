@@ -291,7 +291,10 @@ export default function InlineSearch({ onAdd, disabled = false }) {
     );
 
     let cleanedNameOnly = stripProductCode(nameOnly);
-    // Name stripping logic removed because user explicitly wants the SKU code to be visible in the name string
+    cleanedNameOnly = cleanedNameOnly.replace(/\s*l?\s*Size\s*:\s*[^,\n\(\)\|]+/gi, '');
+    cleanedNameOnly = cleanedNameOnly.replace(/\s*\(\s*\)/g, '');
+    cleanedNameOnly = cleanedNameOnly.replace(/([^\s\(-])\(/g, '$1 (');
+    cleanedNameOnly = cleanedNameOnly.replace(/\s+/g, ' ').trim();
 
     const formatDisplayDescription = (rawText = '', skuVal = '') => {
       if (!rawText) return '';
@@ -309,6 +312,7 @@ export default function InlineSearch({ onAdd, disabled = false }) {
         trimmed = trimmed.replace(/mrp\s*(?:rs\.?|rs|INR|₹)?\s*[\d,\.\s`\/\-]*/gi, '');
         trimmed = trimmed.replace(/(?:rs\.?|rs|INR|₹)\s*[\d,\.\s`\/\-]*/gi, '');
         trimmed = trimmed.replace(/price\s*[\d,\.\s`\/\-]*/gi, '');
+        trimmed = trimmed.replace(/\s*l?\s*Size\s*:\s*[^,\n\(\)\|]+/gi, '');
 
         if (cleanSku) {
           const escapeRegExp = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
