@@ -160,55 +160,24 @@ def _extract_item_code_and_clean_desc(item):
     name = str(item.get("name") or "").strip()
     sku = str(item.get("sku") or item.get("search_code") or item.get("code") or "").strip()
     
-    if not sku:
-        dash_index = name.find(" - ")
-        if dash_index > 0:
-            first_part = name[:dash_index].strip()
-            if any(c.isdigit() for c in first_part) and len(first_part) < 25:
-                sku = first_part
-                name = name[dash_index + 3:].strip()
+    import re
+    if sku:
+        sku_pattern = r'^\s*' + re.escape(sku) + r'\s*[\-\–\—\:]*\s*'
+        name = re.sub(sku_pattern, '', name, flags=re.IGNORECASE).strip()
     else:
-        if name.lower().startswith(sku.lower() + " - "):
-            name = name[len(sku) + 3:].strip()
-        elif name.lower().startswith(sku.lower()):
-            name = name[len(sku):].strip().lstrip("-").strip()
+        m = re.search(r'^\s*([A-Z0-9\s\+\/]{1,25})\s*[\-\–\—\:]\s*', name, re.IGNORECASE)
+        if m:
+            sku = m.group(1).strip()
+            name = name[m.end():].strip()
 
     # Clean "Size : ..." pattern from description name so it's not duplicated in Item Description
-    import re
     name = re.sub(r'\s*Size\s*:\s*[^,\n\(\)\|]+', '', name, flags=re.IGNORECASE).strip()
 
     return sku, name
 
 def _build_item_description(item, styles):
-    _, name_str = _extract_item_code_and_clean_desc(item)
-    raw = str(item.get("rawText") or "").strip()
-    
-    extra_lines = []
-    if raw:
-        import re
-        norm_name = re.sub(r'[^a-z0-9]', '', name_str.lower())
-        
-        for line in raw.split("\n"):
-            line_str = line.strip()
-            if not line_str:
-                continue
-            
-            line_clean = re.sub(r'\s*Size\s*:\s*[^,\n\(\)\|]+', '', line_str, flags=re.IGNORECASE).strip()
-            norm_line = re.sub(r'[^a-z0-9]', '', line_clean.lower())
-            
-            if not norm_line:
-                continue
-                
-            if norm_line == norm_name or norm_line in norm_name or norm_name in norm_line:
-                continue
-                
-            if line_clean not in extra_lines:
-                extra_lines.append(line_clean)
-            
-    extra_html = "<br/>".join(escape(line) for line in extra_lines)
+    sku, name_str = _extract_item_code_and_clean_desc(item)
     description_html = f"<b>{escape(name_str)}</b>"
-    if extra_html:
-        description_html += f"<br/>{extra_html}"
 
     return Paragraph(
         description_html,
