@@ -173,6 +173,10 @@ def _extract_item_code_and_clean_desc(item):
         elif name.lower().startswith(sku.lower()):
             name = name[len(sku):].strip().lstrip("-").strip()
 
+    # Clean "Size : ..." pattern from description name so it's not duplicated in Item Description
+    import re
+    name = re.sub(r'\s*Size\s*:\s*[^,\n\(\)\|]+', '', name, flags=re.IGNORECASE).strip()
+
     return sku, name
 
 def _build_item_description(item, styles):
@@ -568,11 +572,11 @@ def generate_quote(data):
 
         show_disc_col = any(_to_float(item.get("discount"), 0.0) > 0 for item in items)
         if show_disc_col:
-            header_row = ["S.No", "Image", "Item Description", "SKU", "Qty", "Price", "Disc(%)", "Amount"]
-            col_widths = [25, 55, 175, 65, 30, 65, 40, 65]
+            header_row = ["S.No", "Image", "Item Description", "SKU", "Size", "Qty", "Price", "Disc(%)", "Amount"]
+            col_widths = [20, 50, 140, 55, 60, 25, 60, 35, 70]
         else:
-            header_row = ["S.No", "Image", "Item Description", "SKU", "Qty", "Price", "Amount"]
-            col_widths = [30, 60, 205, 75, 35, 65, 75]
+            header_row = ["S.No", "Image", "Item Description", "SKU", "Size", "Qty", "Price", "Amount"]
+            col_widths = [20, 50, 160, 60, 65, 25, 65, 70]
 
         table_data = [header_row]
         
@@ -583,12 +587,14 @@ def generate_quote(data):
             amount = _line_total(item)
 
             code_val, _ = _extract_item_code_and_clean_desc(item)
+            size_val = str(item.get("size") or "-").strip() or "-"
             
             row = [
                 str(idx + 1),
                 _resolve_item_image(base_dir, item),
                 _build_item_description(item, styles),
                 Paragraph(f"<b>{escape(code_val)}</b>" if code_val else "-", bold_code_style),
+                Paragraph(escape(size_val), bold_code_style),
                 _format_quantity(qty),
                 f"{price:,.2f}",
             ]
