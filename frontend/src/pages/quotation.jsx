@@ -61,24 +61,7 @@ const isPageExtractedImage = (value) => {
 };
 
 const stripProductCode = (text = '') => {
-  let val = String(text || '').trim();
-  if (!val) return '';
-
-  // 1. Remove leading code followed by ' - '
-  const dashIndex = val.indexOf(' - ');
-  if (dashIndex > 0) {
-    const firstPart = val.substring(0, dashIndex).trim();
-    const hasDigits = /\d/.test(firstPart);
-    if (hasDigits && firstPart.length < 25) {
-      val = val.substring(dashIndex + 3).trim();
-    }
-  }
-
-  // 2. Remove trailing code in parentheses
-  val = val.replace(/\s*[\(\[]\s*K-[A-Z0-9\-]+\s*[\)\]]/gi, '').trim();
-  val = val.replace(/\s*[\(\[]\s*\d{4,}[A-Z0-9\-]*\s*[\)\]]/gi, '').trim();
-
-  return val;
+  return String(text || '').trim();
 };
 
 
