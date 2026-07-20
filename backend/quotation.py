@@ -158,6 +158,11 @@ def _resolve_item_image(base_dir, item):
 
 def _build_item_description(item, styles):
     name_str = str(item.get("name") or "Unknown Item").strip()
+    sku = str(item.get("sku") or item.get("search_code") or item.get("code") or "").strip()
+    
+    if sku and not name_str.lower().startswith(sku.lower()):
+        name_str = f"{sku} - {name_str}"
+
     raw = str(item.get("rawText") or "").strip()
     
     extra_lines = []
