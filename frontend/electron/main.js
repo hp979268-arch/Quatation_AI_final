@@ -226,6 +226,21 @@ function createWindow() {
   });
 
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    if (url.startsWith('blob:')) {
+      const pdfWindow = new BrowserWindow({
+        width: 1200,
+        height: 850,
+        title: 'Quotation PDF View',
+        autoHideMenuBar: true,
+        webPreferences: {
+          contextIsolation: true,
+          nodeIntegration: false,
+          webSecurity: false,
+        },
+      });
+      pdfWindow.loadURL(url);
+      return { action: 'deny' };
+    }
     shell.openExternal(url);
     return { action: 'deny' };
   });
