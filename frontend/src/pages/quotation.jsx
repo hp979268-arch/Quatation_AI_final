@@ -738,14 +738,16 @@ export default function Quotation({ cart }) {
   };
 
   const getPdfFile = async () => {
-    const response = await fetch(generatedPdfUrl);
+    const target = generatedPdfServerUrl || generatedPdfUrl;
+    const response = await fetch(target);
     const blob = await response.blob();
     return new File([blob], generatedPdfServerName || quoteFilename, { type: 'application/pdf' });
   };
 
   const downloadGeneratedPdf = () => {
+    const target = generatedPdfServerUrl || generatedPdfUrl;
     const link = document.createElement('a');
-    link.href = generatedPdfUrl;
+    link.href = target;
     link.download = generatedPdfServerName || quoteFilename;
     document.body.appendChild(link);
     link.click();
@@ -1429,11 +1431,36 @@ export default function Quotation({ cart }) {
             )}
 
             <div className="qt-pdf-links">
-              <a href={generatedPdfUrl} target="_blank" rel="noreferrer" className="qt-pdf-view">
+              <a 
+                href={generatedPdfServerUrl || generatedPdfUrl} 
+                target="_blank" 
+                rel="noreferrer" 
+                className="qt-pdf-view"
+                onClick={(e) => {
+                  const target = generatedPdfServerUrl || generatedPdfUrl;
+                  if (target) {
+                    e.preventDefault();
+                    window.open(target, '_blank', 'noopener,noreferrer');
+                  }
+                }}
+              >
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
                 View PDF
               </a>
-              <a href={generatedPdfUrl} download={generatedPdfServerName || quoteFilename} className="qt-pdf-download">
+              <a 
+                href={generatedPdfServerUrl || generatedPdfUrl} 
+                download={generatedPdfServerName || quoteFilename} 
+                className="qt-pdf-download"
+                onClick={(e) => {
+                  const target = generatedPdfServerUrl || generatedPdfUrl;
+                  if (generatedPdfServerUrl) {
+                    // Let native HTTPS download handle direct server URL
+                  } else {
+                    e.preventDefault();
+                    downloadGeneratedPdf();
+                  }
+                }}
+              >
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
                 Download PDF
               </a>
