@@ -193,9 +193,23 @@
   box-shadow: 0 24px 38px -30px rgba(15, 23, 42, 0.8);
 }
 
+.qt-table-headers {
+  display: grid;
+  grid-template-columns: 72px minmax(180px, 1fr) 140px 100px 110px 65px 95px 75px 38px;
+  gap: 0.7rem;
+  align-items: center;
+  padding: 0.5rem 0.86rem;
+  margin-bottom: 0.3rem;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--text-secondary);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
 .qt-item-grid {
   display: grid;
-  grid-template-columns: 72px minmax(180px, 1fr) 150px 110px 60px 80px 80px 80px auto;
+  grid-template-columns: 72px minmax(180px, 1fr) 140px 100px 110px 65px 95px 75px 38px;
   gap: 0.7rem;
   align-items: center;
   margin-bottom: 0.72rem;

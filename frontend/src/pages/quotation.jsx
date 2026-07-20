@@ -1119,6 +1119,18 @@ export default function Quotation({ cart }) {
           </button>
         </div>
 
+        <div className="qt-table-headers">
+          <span>IMAGE</span>
+          <span>ITEM NAME</span>
+          <span>SECTION</span>
+          <span>SKU</span>
+          <span>SIZE</span>
+          <span>QTY</span>
+          <span>PRICE</span>
+          <span>DISC %</span>
+          <span></span>
+        </div>
+
         <div className="qt-items-list">
           {items.map((item, index) => (
             <article key={index} className="qt-item-card">
@@ -1171,22 +1183,6 @@ export default function Quotation({ cart }) {
                 />
                 <input
                   className="qt-field"
-                  name="price"
-                  type="number"
-                  value={item.price}
-                  placeholder="Price"
-                  onChange={(e) => handleItemChange(index, e)}
-                />
-                <input
-                  className="qt-field"
-                  name="quantity"
-                  type="number"
-                  value={item.quantity}
-                  placeholder="Qty"
-                  onChange={(e) => handleItemChange(index, e)}
-                />
-                <input
-                  className="qt-field"
                   name="sku"
                   value={item.sku || ''}
                   placeholder="SKU"
@@ -1208,6 +1204,22 @@ export default function Quotation({ cart }) {
                   name="size"
                   value={item.size || ''}
                   placeholder="Size"
+                  onChange={(e) => handleItemChange(index, e)}
+                />
+                <input
+                  className="qt-field"
+                  name="quantity"
+                  type="number"
+                  value={item.quantity}
+                  placeholder="Qty"
+                  onChange={(e) => handleItemChange(index, e)}
+                />
+                <input
+                  className="qt-field"
+                  name="price"
+                  type="number"
+                  value={item.price}
+                  placeholder="Price"
                   onChange={(e) => handleItemChange(index, e)}
                 />
                 <input
