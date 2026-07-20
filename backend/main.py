@@ -128,6 +128,7 @@ def serve_image(filename: str):
 
     raise HTTPException(status_code=404)
 
+app.mount("/static/quotes", StaticFiles(directory=STATIC_QUOTES_DIR), name="static_quotes")
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 # Enhanced CORS for desktop (allows null origin from file://)
