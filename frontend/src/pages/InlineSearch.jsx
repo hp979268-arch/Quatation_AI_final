@@ -328,6 +328,10 @@ export default function InlineSearch({ onAdd, disabled = false }) {
         trimmed = trimmed.replace(/\s+/g, ' ').trim();
 
         if (trimmed.length < 3) continue;
+        const normName = norm(cleanedNameOnly);
+        const normTrimmed = norm(trimmed);
+        if (normName && (normTrimmed === normName || normTrimmed.includes(normName) || normName.includes(normTrimmed))) continue;
+
         if (!cleanLines.includes(trimmed)) {
           cleanLines.push(trimmed);
         }

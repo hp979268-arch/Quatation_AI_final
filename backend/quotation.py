@@ -185,14 +185,25 @@ def _build_item_description(item, styles):
     
     extra_lines = []
     if raw:
+        import re
+        norm_name = re.sub(r'[^a-z0-9]', '', name_str.lower())
+        
         for line in raw.split("\n"):
             line_str = line.strip()
             if not line_str:
                 continue
-            # Avoid repeating the main name_str or substrings/components of name_str
-            if line_str == name_str or name_str.endswith(line_str) or line_str in name_str:
+            
+            line_clean = re.sub(r'\s*Size\s*:\s*[^,\n\(\)\|]+', '', line_str, flags=re.IGNORECASE).strip()
+            norm_line = re.sub(r'[^a-z0-9]', '', line_clean.lower())
+            
+            if not norm_line:
                 continue
-            extra_lines.append(line_str)
+                
+            if norm_line == norm_name or norm_line in norm_name or norm_name in norm_line:
+                continue
+                
+            if line_clean not in extra_lines:
+                extra_lines.append(line_clean)
             
     extra_html = "<br/>".join(escape(line) for line in extra_lines)
     description_html = f"<b>{escape(name_str)}</b>"
