@@ -453,7 +453,23 @@ def prepare_item_for_display(item):
     display_item["display_name"] = _clean_display_text(display_name)
     display_item["display_code"] = _clean_display_text(display_code)
     if raw_text:
-        display_item["display_text"] = _strip_mrp_lines(raw_text)
+        # Strip SKU prefix and deduplicate: the raw OCR text often has
+        # "SKU - Description Description" — we want just "Description".
+        import re as _re
+        _stripped_text = _strip_mrp_lines(raw_text)
+        # Remove leading SKU/code prefix (e.g. "1125 BRG - ")
+        _search_code_val = str(item.get("search_code") or "").strip()
+        if _search_code_val:
+            _stripped_text = _re.sub(
+                r'^\s*' + _re.escape(_search_code_val) + r'\s*[\-\–\—]\s*',
+                '', _stripped_text, flags=_re.IGNORECASE
+            ).strip()
+        # Deduplicate: if text is "Foo Bar Foo Bar", reduce to "Foo Bar"
+        _norm = lambda s: _re.sub(r'[^a-z0-9]', '', s.lower())
+        _half = len(_stripped_text) // 2
+        if _half > 3 and _norm(_stripped_text[:_half]) == _norm(_stripped_text[_half:].strip()):
+            _stripped_text = _stripped_text[:_half].strip()
+        display_item["display_text"] = _stripped_text
 
     return display_item
 

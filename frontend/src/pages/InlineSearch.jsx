@@ -505,7 +505,7 @@ export default function InlineSearch({ onAdd, disabled = false }) {
                 overflowWrap: 'anywhere',
               }}
             >
-              {sanitizeDisplayText(s.description || stripProductCode(s.display_name || s.full_name))}
+              {sanitizeDisplayText(s.description || (s.display_name ? stripProductCode(s.display_name) : '') || stripProductCode(s.full_name))}
             </div>
           </div>
 
