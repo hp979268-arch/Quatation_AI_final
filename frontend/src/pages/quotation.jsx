@@ -789,13 +789,25 @@ export default function Quotation({ cart }) {
       };
 
       const response = await axios.post(`${BASE}/generate-quote`, payload, { responseType: 'blob' });
-      const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
-      setGeneratedPdfUrl(url);
-      const serverPath = response.headers['x-quote-file-url'] || '';
-      const serverName = response.headers['x-quote-file-name'] || '';
-      const qNum = response.headers['x-quote-number'] || '';
+      
+      const getHeader = (key) => {
+        if (!response || !response.headers) return '';
+        if (typeof response.headers.get === 'function') {
+          return response.headers.get(key) || response.headers.get(key.toLowerCase()) || '';
+        }
+        return response.headers[key] || response.headers[key.toLowerCase()] || '';
+      };
+
+      const serverPath = getHeader('x-quote-file-url');
+      const serverName = getHeader('x-quote-file-name');
+      const qNum = getHeader('x-quote-number');
       const serverUrl = serverPath ? resolveAssetUrl(serverPath) : '';
-      setGeneratedPdfServerUrl(serverUrl);
+
+      const blobUrl = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+      const activeUrl = serverUrl || blobUrl;
+
+      setGeneratedPdfUrl(activeUrl);
+      setGeneratedPdfServerUrl(activeUrl);
       setGeneratedPdfServerName(serverName || '');
       setQuoteNumber(qNum);
       const today = new Date();
