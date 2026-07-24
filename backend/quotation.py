@@ -581,8 +581,9 @@ def generate_quote(data):
         alignment=2,
     )
 
-    room_summary_data = [[Paragraph("SUMMARY OF ALL BATH ROOM", room_summary_title), ""]]
     has_named_sections = any(bool(sec["name"]) for sec in room_sections)
+    summary_header_title = "SUMMARY OF ALL BATH ROOM" if has_named_sections else "SUMMARY"
+    room_summary_data = [[Paragraph(summary_header_title, room_summary_title), ""]]
 
     if has_named_sections:
         for section in room_sections:

@@ -1270,7 +1270,7 @@ export default function Quotation({ cart }) {
           <table className="qt-room-summary-table">
             <thead>
               <tr>
-                <th colSpan="2">SUMMARY OF ALL BATH ROOM</th>
+                <th colSpan="2">{roomSummaries.some(s => s.name && s.name !== 'SUBTOTAL' && s.name !== 'GENERAL') ? 'SUMMARY OF ALL BATH ROOM' : 'SUMMARY'}</th>
               </tr>
             </thead>
             <tbody>
