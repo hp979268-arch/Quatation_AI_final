@@ -29,12 +29,7 @@ def _safe_quantity(value, default=1.0):
 
 def _normalize_room_name(value):
     room_name = str(value or "").strip()
-    if not room_name:
-        return "GENERAL BATHROOM"
-    upper = room_name.upper()
-    if not any(w in upper for w in ["BATHROOM", "BATH", "TOILET", "ROOM"]):
-        return f"{upper} BATHROOM"
-    return upper
+    return room_name.upper() if room_name else ""
 
 def _format_quantity(value):
     qty = _safe_quantity(value, 1.0)
@@ -398,7 +393,8 @@ def generate_quote(data):
     )
 
     for section in room_sections:
-        elements.append(Paragraph(section["name"], section_heading_style))
+        if section["name"]:
+            elements.append(Paragraph(section["name"], section_heading_style))
 
         # Only show discount column if at least one item in this section has a discount > 0
         show_disc_col = any(_to_float(item.get("discount"), 0.0) > 0 for item in section["items"])
@@ -586,10 +582,19 @@ def generate_quote(data):
     )
 
     room_summary_data = [[Paragraph("SUMMARY OF ALL BATH ROOM", room_summary_title), ""]]
-    for section in room_sections:
+    has_named_sections = any(bool(sec["name"]) for sec in room_sections)
+
+    if has_named_sections:
+        for section in room_sections:
+            if section["name"]:
+                room_summary_data.append([
+                    Paragraph(section["name"], room_summary_label),
+                    Paragraph(f"Rs. {section['taxable_total']:,.2f}", room_summary_value),
+                ])
+    else:
         room_summary_data.append([
-            Paragraph(section["name"], room_summary_label),
-            Paragraph(f"Rs. {section['taxable_total']:,.2f}", room_summary_value),
+            Paragraph("SUBTOTAL", room_summary_label),
+            Paragraph(f"Rs. {subtotal:,.2f}", room_summary_value),
         ])
 
     if gst_rate > 0:
