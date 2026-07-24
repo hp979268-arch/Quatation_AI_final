@@ -678,7 +678,7 @@ export default function Quotation({ cart }) {
   // Group items by their Room/Section field
   const roomGroups = items.reduce((acc, item) => {
     let room = (item.room || '').trim().toUpperCase();
-    if (!room) room = "GENERAL"; // Give it a default name if left empty
+    if (!room) room = "SUBTOTAL"; // Default to SUBTOTAL if room is empty
 
     if (!acc[room]) acc[room] = 0;
 
