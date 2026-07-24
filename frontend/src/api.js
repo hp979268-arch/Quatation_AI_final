@@ -8,8 +8,20 @@ const normalizeBase = (value) => String(value || '').trim().replace(/\/+$/, '');
 
 export function getApiBase() {
   const fromStorage = normalizeBase(readString(API_OVERRIDE_KEY, ''));
+  if (fromStorage) return fromStorage;
+
+  const isElectron =
+    typeof window !== 'undefined' &&
+    (window.location.protocol === 'file:' ||
+      (window.navigator && window.navigator.userAgent && window.navigator.userAgent.includes('Electron')) ||
+      Boolean(window.desktopApp && window.desktopApp.isDesktop));
+
+  if (isElectron) {
+    return 'http://127.0.0.1:8000';
+  }
+
   const fromEnv = normalizeBase(process.env.REACT_APP_API_URL || '');
-  return fromStorage || fromEnv || DEFAULT_API_BASE;
+  return fromEnv || DEFAULT_API_BASE;
 }
 
 export function hasApiBaseOverride() {
@@ -33,3 +45,4 @@ export function clearApiBaseOverride() {
 const BASE = getApiBase();
 
 export default BASE;
+
