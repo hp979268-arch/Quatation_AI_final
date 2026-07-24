@@ -29,6 +29,7 @@ def _safe_quantity(value, default=1.0):
 
 def _normalize_room_name(value):
     room_name = str(value or "").strip()
+    # Return the user's room name as-is (uppercased). Empty rooms get empty string.
     return room_name.upper() if room_name else ""
 
 def _format_quantity(value):
@@ -582,7 +583,8 @@ def generate_quote(data):
     )
 
     has_named_sections = any(bool(sec["name"]) for sec in room_sections)
-    summary_header_title = "SUMMARY OF ALL BATH ROOM" if has_named_sections else "SUMMARY"
+    # Generic header — works for any room type (Living Room, Kitchen, Bathroom, etc.)
+    summary_header_title = "SUMMARY OF ALL" if has_named_sections else "SUMMARY"
     room_summary_data = [[Paragraph(summary_header_title, room_summary_title), ""]]
 
     if has_named_sections:
