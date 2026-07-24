@@ -395,6 +395,21 @@ export default function Quotation({ cart }) {
   const [client, setClient] = useState(blankClient);
   const [showGstInput, setShowGstInput] = useState(false);
   const [items, setItems] = useState(() => mapCartToItems(cart));
+
+  const handleActiveRoomChange = (newRoom) => {
+    setActiveRoom((prevActiveRoom) => {
+      const oldRoom = prevActiveRoom;
+      setItems((prevItems) =>
+        prevItems.map((it) => {
+          if (!it.room || it.room === oldRoom) {
+            return { ...it, room: newRoom };
+          }
+          return it;
+        })
+      );
+      return newRoom;
+    });
+  };
   const [discountType, setDiscountType] = useState('percent'); // 'percent' or 'flat'
   const [discountValue, setDiscountValue] = useState(0);
   const [gstRate, setGstRate] = useState(18);
@@ -1130,12 +1145,7 @@ export default function Quotation({ cart }) {
               value={activeRoom}
               options={roomOptions}
               placeholder="Select or Create Section..."
-              onValueChange={(newRoom) => {
-                setActiveRoom(newRoom);
-                setItems((prev) =>
-                  prev.map((it) => (!it.room ? { ...it, room: newRoom } : it))
-                );
-              }}
+              onValueChange={handleActiveRoomChange}
             />
           </div>
 
