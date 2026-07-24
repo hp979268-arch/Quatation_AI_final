@@ -355,10 +355,11 @@ def generate_quote(data):
     elements.append(Spacer(1, 25))
 
     # ── 4. Items Table section ─────────────────────────────────────────────
+    default_room_name = _normalize_room_name(data.get("current_room") or data.get("active_room") or data.get("room") or "")
     room_sections = []
     room_lookup = {}
     for item in items:
-        room_name = _normalize_room_name(item.get("room"))
+        room_name = _normalize_room_name(item.get("room")) or default_room_name
         if room_name not in room_lookup:
             room_lookup[room_name] = {
                 "name": room_name,

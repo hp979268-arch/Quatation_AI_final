@@ -677,7 +677,7 @@ export default function Quotation({ cart }) {
 
   // Group items by their Room/Section field
   const roomGroups = items.reduce((acc, item) => {
-    let room = (item.room || '').trim().toUpperCase();
+    let room = (item.room || activeRoom || '').trim().toUpperCase();
     if (!room) room = "SUBTOTAL"; // Default to SUBTOTAL if room is empty
 
     if (!acc[room]) acc[room] = 0;
@@ -770,9 +770,15 @@ export default function Quotation({ cart }) {
     }
 
     try {
+      const preparedItems = items.map((item) => ({
+        ...item,
+        room: (item.room || activeRoom || '').trim(),
+      }));
+
       const payload = {
         ...client,
-        items,
+        current_room: (activeRoom || '').trim(),
+        items: preparedItems,
         discount_type: discountType,
         discount_flat: discountType === 'flat' ? parseFloat(discountValue || 0) : 0,
         discount_percent: parseFloat(discountPercent || 0),
@@ -1124,7 +1130,12 @@ export default function Quotation({ cart }) {
               value={activeRoom}
               options={roomOptions}
               placeholder="Select or Create Section..."
-              onValueChange={setActiveRoom}
+              onValueChange={(newRoom) => {
+                setActiveRoom(newRoom);
+                setItems((prev) =>
+                  prev.map((it) => (!it.room ? { ...it, room: newRoom } : it))
+                );
+              }}
             />
           </div>
 
