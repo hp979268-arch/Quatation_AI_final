@@ -584,8 +584,7 @@ def generate_quote(data):
     )
 
     has_named_sections = any(bool(sec["name"]) for sec in room_sections)
-    # Generic header — works for any room type (Living Room, Kitchen, Bathroom, etc.)
-    summary_header_title = "SUMMARY OF ALL" if has_named_sections else "SUMMARY"
+    summary_header_title = "SUMMARY"
     room_summary_data = [[Paragraph(summary_header_title, room_summary_title), ""]]
 
     if has_named_sections:
