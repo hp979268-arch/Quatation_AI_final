@@ -373,6 +373,10 @@ def generate_quote(data):
         room_lookup[room_name]["display_total"] += _line_total(item)
         room_lookup[room_name]["taxable_total"] += _line_taxable_total(item, discount_percent)
 
+    if len(room_sections) == 1 and not room_sections[0]["name"] and default_room_name:
+        room_sections[0]["name"] = default_room_name
+        room_lookup[default_room_name] = room_sections[0]
+
     subtotal = _to_float(data.get("subtotal", 0))
     gst_amt  = _to_float(data.get("gst_amount", 0))
     grand    = _to_float(data.get("grand_total", 0))

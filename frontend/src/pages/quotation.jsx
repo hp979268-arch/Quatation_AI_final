@@ -573,7 +573,13 @@ export default function Quotation({ cart }) {
         gst: data.gst || '',
         address: data.address || '',
       });
-      setItems(data.items && data.items.length > 0 ? data.items.map(sanitizeItem) : [createBlankItem()]);
+      const loadedRoom = (data.current_room || data.active_room || data.room || '').trim();
+      setActiveRoom(loadedRoom);
+      setItems(
+        data.items && data.items.length > 0
+          ? data.items.map((it) => sanitizeItem({ ...it, room: (it.room || '').trim() || loadedRoom }))
+          : [{ ...createBlankItem(), room: loadedRoom }]
+      );
       setDiscountType(data.discount_type || 'percent');
       setDiscountValue(data.discount_type === 'flat' ? (data.discount_flat || 0) : (data.discount_percent || 0));
       setGstRate(data.gst_rate || 18);
@@ -641,6 +647,7 @@ export default function Quotation({ cart }) {
 
     setClient(blankClient);
     setShowGstInput(false);
+    setActiveRoom('');
     setItems(mapCartToItems(cart));
     setDiscountType('percent');
     setDiscountValue(0);
@@ -785,14 +792,22 @@ export default function Quotation({ cart }) {
     }
 
     try {
-      const preparedItems = items.map((item) => ({
-        ...item,
-        room: (item.room || activeRoom || '').trim(),
-      }));
+      const preparedItems = items.map((item) => {
+        const itemRoom = (item.room || '').trim();
+        const finalRoom = itemRoom || (activeRoom || '').trim();
+        return {
+          ...item,
+          room: finalRoom,
+        };
+      });
+
+      const currentRoom = (activeRoom || '').trim() || (preparedItems.find((it) => it.room)?.room || '');
 
       const payload = {
         ...client,
-        current_room: (activeRoom || '').trim(),
+        current_room: currentRoom,
+        active_room: currentRoom,
+        room: currentRoom,
         items: preparedItems,
         discount_type: discountType,
         discount_flat: discountType === 'flat' ? parseFloat(discountValue || 0) : 0,
